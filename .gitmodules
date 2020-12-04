@@ -1,0 +1,3 @@
+[submodule "External/lipzip"]
+	path = External/lipzip
+	url = https://github.com/JanX2/libzip.git
