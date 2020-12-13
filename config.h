@@ -36,7 +36,6 @@
 #define HAVE_NULLABLE
 /* #undef HAVE_OPENSSL */
 #define HAVE_SETMODE
-#define HAVE_SNPRINTF
 #define HAVE_STRCASECMP
 #define HAVE_STRDUP
 /* #undef HAVE_STRICMP */
