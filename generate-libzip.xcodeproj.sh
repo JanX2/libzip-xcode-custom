@@ -24,10 +24,10 @@ realpath() {
 }
 
 ROOT_DIR=$(dirname $(realpath "$0"))
-#echo "${ROOT_DIR}"
+#echo "ROOT_DIR: ${ROOT_DIR}"
 
 MACOS_SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
-#echo "${MACOS_SDK_ROOT}"
+#echo "MACOS_SDK_ROOT: ${MACOS_SDK_ROOT}"
 
 cd "${ROOT_DIR}/${CMAKE_PROJECT_RELATIVE_PATH}"
 cmake -G "Xcode" -B "${CMAKE_PROJECT_ASSCENTION_PATH}" \
@@ -48,7 +48,7 @@ cd "${ROOT_DIR}/${PROJECT_NAME}.xcodeproj"
 
 # Find the main group ID
 MAIN_GROUP_ID=$(perl -0777 -nle 'm:\t*mainGroup = ([0-9A-F]+):; print "$1\n"' project.pbxproj)
-#echo "${MAIN_GROUP_ID}"
+#echo "MAIN_GROUP_ID: ${MAIN_GROUP_ID}"
 
 
 # Patch project to relative paths.
@@ -71,14 +71,14 @@ sed \
 CHILD_ID_LIST=$(perl -0777 -nle 'm:\t*'"${MAIN_GROUP_ID}"'\Q = {\E.*?\Qchildren = (\E(.*?)\Q);\E.*?\Q};\E:s; print "$1\n"' project.pbxproj)
 PRODUCTS_ID=$(perl -0777 -nle 'm:([0-9A-F]+)[^\n]*?\Q = {\E[^}]*?\Qname = Products;\E:; print "$1\n"' project.pbxproj)
 
-#echo "${CHILD_ID_LIST}"
+#echo "CHILD_ID_LIST: ${CHILD_ID_LIST}"
 while IFS= read -r
 do
 	# TODO Skip "Products"
 	CHILD_ID=$(echo "${REPLY}" | perl -nle 'm/\t*([0-9A-F]+)/; print $1')
 	[ -z "${CHILD_ID}" ] && continue
 	[ "${PRODUCTS_ID}" = "${CHILD_ID}" ] && continue
-	#echo "${CHILD_ID}"
+	#echo "CHILD_ID: ${CHILD_ID}"
 	# Set child group to CMake root:
 	perl -i -pe 's:('"${CHILD_ID}"'[^\n]*?\Q = {\E):\1\npath = "'"${CMAKE_PROJECT_RELATIVE_PATH}"'";:g' project.pbxproj
 done <<< "$CHILD_ID_LIST"
