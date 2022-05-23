@@ -23,6 +23,7 @@
 #define HAVE_CRYPTO
 /* #undef HAVE_FICLONERANGE */
 #define HAVE_FILENO
+#define HAVE_FCHMOD
 #define HAVE_FSEEKO
 #define HAVE_FTELLO
 #define HAVE_GETPROGNAME
@@ -36,6 +37,7 @@
 #define HAVE_NULLABLE
 /* #undef HAVE_OPENSSL */
 #define HAVE_SETMODE
+#define HAVE_SNPRINTF
 #define HAVE_STRCASECMP
 #define HAVE_STRDUP
 /* #undef HAVE_STRICMP */
@@ -57,6 +59,6 @@
 #define HAVE_SHARED
 /* END DEFINES */
 #define PACKAGE "libzip"
-#define VERSION "1.7.3.1"
+#define VERSION "1.8.0"
 
 #endif /* HAD_CONFIG_H */
