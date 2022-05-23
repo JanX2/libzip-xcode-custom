@@ -12,6 +12,7 @@ One approach to improve on the script would be to rewrite it in something better
 
 The (pretty crude) technique used in the script should be adaptable to other projects using CMake so they can be integrated into the Xcode IDE toolchain. This got particularly important for me, because of the need to generate Universal builds for lipzip. 
 
+NOTE: When working on this script, you may want to delete CMakeFiles, CMakeScripts and "*.cmake" after changes or enable this in the script itself (using CLEAN_CMAKE_ARTEFACTS_ON_EVERY_RUN).
 
 ## Sidenotes
 

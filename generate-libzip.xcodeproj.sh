@@ -18,6 +18,8 @@ CMAKE_PROJECT_RELATIVE_PATH="External/lipzip"
 CMAKE_PROJECT_ASSCENTION_PATH="../../"
 CMAKE_RELATIVE_SOURCE_ROOT="${CMAKE_PROJECT_RELATIVE_PATH}/lib"
 
+CLEAN_CMAKE_ARTEFACTS_ON_EVERY_RUN=0
+
 # From: https://stackoverflow.com/a/3572105
 realpath() {
 	[[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
@@ -29,7 +31,21 @@ ROOT_DIR=$(dirname $(realpath "$0"))
 MACOS_SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
 #echo "MACOS_SDK_ROOT: ${MACOS_SDK_ROOT}"
 
-cd "${ROOT_DIR}/${CMAKE_PROJECT_RELATIVE_PATH}"
+CMAKE_PROJECT_ROOT="${ROOT_DIR}/${CMAKE_PROJECT_RELATIVE_PATH}"
+#echo "CMAKE_PROJECT_ROOT: ${CMAKE_PROJECT_ROOT}"
+cd "$CMAKE_PROJECT_ROOT"
+
+#cmake --build "${CMAKE_PROJECT_ASSCENTION_PATH}" --target clean # This doesn’t seem to work for us.
+# Do cleanup manually:
+if [ $CLEAN_CMAKE_ARTEFACTS_ON_EVERY_RUN -eq 1 ]; then
+	echo "Deleting CMakeFiles"
+	rm -R "${ROOT_DIR}/CMakeFiles"
+	echo "Deleting CMakeScripts"
+	rm -R "${ROOT_DIR}/CMakeScripts"
+	echo "Deleting *.cmake"
+	rm "${ROOT_DIR}/*.cmake"
+fi
+
 cmake -G "Xcode" -B "${CMAKE_PROJECT_ASSCENTION_PATH}" \
 -D "CMAKE_OSX_ARCHITECTURES=\$(ARCHS_STANDARD)" \
 -D "CMAKE_OSX_SYSROOT=macosx" \
